@@ -1,143 +1,149 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>{{ config('app.name', 'TimmerX') }}</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
-        <!-- Third party plugin CSS-->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/welcome.css" rel="stylesheet" />
-        <!-- Scripts -->
-        <script src="{{ asset('js/welcome.js') }}" defer></script>
-    </head>
-    <body id="page-top">
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
-            <div class="container">
-                
-                <a class="navbar-brand js-scroll-trigger" href="#page-top">TimmerX</a>
-                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav mr-auto">
-                    
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
-                    </ul>
+<!doctype html>
+<html class="h-100" lang="en">
 
-                    <ul class="navbar-nav ml-auto">
-                    
-                        <li class="nav-item">@if (Route::has('login'))
-                            <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-                                @auth
-                                    <a href="{{ url('/home') }}" class="text-sm text-gray-700 underline">Home</a>
-                                @else
-                                    <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
-            
-                                    @if (Route::has('register'))
-                                        <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
-                                    @endif
-                                @endauth
-                            </div>
-                        @endif</li>
-                    </ul>
-                    
-                </div>
-                
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+  <meta name="description" content="A growing collection of ready to use components for the CSS framework Bootstrap 5">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon-16x16.png') }}">
+  <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('img/favicon.png') }}">
+  <meta name="author" content="ctroncontrol">
+  <meta name="generator" content="christek energy">
+  <meta name="HandheldFriendly" content="true">
+  <title>ctron control - Now you are in control</title>
+  <link rel="stylesheet" href="{{ asset('css/theme.min.css')}}">
+  {{-- <link rel="stylesheet" href="{{ asset('css/my.css')}}"> --}}
+  <style>
+    /* Add your custom font styles here */
+  </style>
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#navScroll">
+
+  <!-- Navigation -->
+  <nav id="navScroll" class="navbar navbar-expand-lg navbar-light fixed-top" tabindex="0">
+    <div class="container">
+      <a class="navbar-brand pe-4 fs-4" href="{{url('/')}}">
+        <img src="{{asset('images/favicon.png')}}" alt="logo" height="32" width="32">
+        <span class="ms-1 fw-bolder">Ctroncontrol</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="#services" aria-label="Brings you to the frontpage">
+              Contact
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#aboutus">About us</a>
+          </li>
+        </ul>
+
+        <!-- Login and Register Buttons from the first code -->
+        <ul class="navbar-nav ml-auto">
+          @if (Route::has('login'))
+          <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+            @auth
+            <a href="{{ url('/home') }}" class="text-sm text-gray-700 underline">Home</a>
+            @else
+            <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
+            @if (Route::has('register'))
+            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
+            @endif
+            @endauth
+          </div>
+          @endif
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <div class="w-100 overflow-hidden bg-gray-100" id="top">
+      <div class="container position-relative">
+        <div class="col-12 col-lg-8 mt-0 h-100 position-absolute top-0 end-0 bg-cover" data-aos="fade-left" style="background-image: url(images/ctronimage2.jpg);">
+        </div>
+        <div class="row">
+          <div class="col-lg-7 py-vh-6 position-relative" data-aos="fade-right">
+            <h1 class="display-1 fw-bold mt-5">Control devices remotely from anywhere</h1>
+            <p class="lead">Remote monitoring has never been more interesting and simple.</p>
+            <a href="{{ url('/home') }}" class="btn btn-dark btn-xl shadow me-3 rounded-0 my-5">Get started</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About Us Section -->
+    <div class="py-vh-4 bg-gray-100 w-100 overflow-hidden" id="aboutus">
+      <div class="container">
+        <div class="row d-flex justify-content-between align-items-center">
+          <div class="col-lg-6">
+            <div class="row gx-5 d-flex">
+              <div class="col-md-11">
+                <div class="shadow ratio ratio-16x9 rounded bg-cover bp-center align-self-end" data-aos="fade-right" style="background-image: url(images/ctronimage.jpg);--bs-aspect-ratio: 50%;"></div>
+              </div>
             </div>
-        </nav>
-        <!-- Masthead-->
-        <header class="masthead">
-            <div class="container h-100">
-                <div class="row h-100 align-items-center justify-content-center text-center">
-                    <div class="col-lg-10 align-self-end">
-                        <h1 class="text-uppercase text-white font-weight-bold">Welcome to TimmerX</h1>
-                        <hr class="divider my-4" />
-                    </div>
-                    <div class="col-lg-8 align-self-baseline">
-                        <p class="text-white-75 font-weight-light mb-5">TimmerX web based </p>
-                        <a class="btn btn-primary btn-xl js-scroll-trigger" href="{{ route('register') }}">Get started</a>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- About-->
-        <section class="page-section bg-primary" id="about">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 text-center">
-                        <h2 class="text-white mt-0">We've got what you need!</h2>
-                        <hr class="divider light my-4" />
-                        <p class="text-white-50 mb-4">With TimmerX you are in control</p>
-                        <a class="btn btn-light btn-xl js-scroll-trigger" href="#services">Get Started!</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Services-->
-        
-        <!-- Portfolio-->
-        
-        <!-- Call to action-->
-        <section class="page-section bg-dark text-white">
-            <div class="container text-center">
-                <h2 class="mb-4">Free Download at Start Bootstrap!</h2>
-                <a class="btn btn-light btn-xl" href="https://startbootstrap.com/theme/creative/">Download Now!</a>
-            </div>
-        </section>
-        <!-- Contact-->
-        <section class="page-section" id="contact">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 text-center">
-                        <h2 class="mt-0">Let's Get In Touch!</h2>
-                        <hr class="divider my-4" />
-                        <p class="text-muted mb-5">Feel free to contact us for support if you encounter any difficulty</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 ml-auto text-center mb-5 mb-lg-0">
-                        <i class="fas fa-phone fa-3x mb-3 text-muted"></i>
-                        <div>+234 (808) 546-3162</div>
-                    </div>
-                    <div class="col-lg-4 mr-auto text-center">
-                        <i class="fas fa-envelope fa-3x mb-3 text-muted"></i>
-                        <!-- Make sure to change the email address in BOTH the anchor text and the link target below!-->
-                        <a class="d-block" href="mailto:pat4allgen@gmail.com">pat4allgen@gmail.com</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Footer-->
-        <footer class="bg-light py-5">
-            <div class="container">
-                <div class="small text-center text-muted">
-                    Copyright &copy;
-                    <!-- This script automatically adds the current year to your website footer-->
-                    <!-- (credit: https://updateyourfooter.com/)-->
-                    <script>
-                        document.write(new Date().getFullYear());
-                    </script>
-                    - Company Name
-                </div>
-            </div>
-        </footer>
-        <!-- Bootstrap core JS-->
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Third party plugin JS-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
-    </body>
+          </div>
+          <div class="col-lg-4">
+            <h3 class="py-5 border-top border-dark" data-aos="fade-left">Simplify your power management with our remote control timer.</h3>
+            <p data-aos="fade-left" data-aos-delay="200">Take charge of your energy use with ease.</p>
+            <p><a href="{{ url('/home') }}" class="link-fancy link-dark" data-aos="fade-left" data-aos-delay="400">Learn more</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container small border-top">
+      <div class="row py-5 d-flex justify-content-between">
+        <div class="col-12 col-lg-6 col-xl-3 border-end p-5">
+          <img src="{{asset('images/favicon.png')}}" alt="logo" height="32" width="32">
+          <address class="text-secondary mt-3">
+            <strong>Ctroncontrol</strong><br>
+            <a class="nav-link link-secondary ps-0" href="http://christekenergy.com" target="_blank" rel="noopener noreferrer">christekenergy.com</a><br>
+            {{-- Ikotun Lagos, Nigeria<br> --}}
+            {{-- <abbr title="Phone">P:</abbr> 08085463162 --}}
+          </address>
+        </div>
+        <div class="col-12 col-lg-6 col-xl-3 border-end p-5">
+          <h3 class="h6 mb-3">Products</h3>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link link-secondary ps-0" href="{{url('/')}}">Ctrontimer</a></li>
+            <li class="nav-item"><a class="nav-link link-secondary ps-0" href="{{url('/')}}">Ctron power manager</a></li>
+          </ul>
+        </div>
+        <div class="col-12 col-lg-6 col-xl-3 p-5">
+          <h3 class="h6 mb-3">Pages</h3>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link link-secondary ps-0" href="{{url('/')}}">About us</a></li>
+            <li class="nav-item"><a class="nav-link link-secondary ps-0" href="{{url('/')}}">Services</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ asset('js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{ asset('js/aos.js')}}"></script>
+  <script src="{{ asset('js/app.js')}}"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: "slide",
+      once: true
+    });
+  </script>
+</body>
+
 </html>

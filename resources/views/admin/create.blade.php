@@ -1,36 +1,31 @@
-@extends('layouts.main')
 
-@section('content')
-<div class="container-fluid">
-    @include('inc.messages')
-    <h1 class="mt-4">Create Devices</h1>
 
-    <form action="{{ route('admin.store') }}" method="POST">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <div class="form-group">
-            <label for="device_name">Device Name:</label>
-            <input type="text" name="device_name" class="form-control" placeholder="Enter device name">
-        </div>
-        <div class="form-group">
-            <label for="device_serialnumber">Device SerialNumber:</label>
-            <input type="text" name="device_serialnumber" class="form-control" placeholder="Enter device SerialNumber">
-        </div>
-        <div class="form-group">
-            <label for="organization_name">Organization Name:</label>
-            <input type="text" name="organization_name" class="form-control" placeholder="Enter Organization Name">
-        </div>
-        <div class="form-group">
-            <label for="location">Location:</label>
-            <input type="text" name="location" class="form-control" placeholder="Enter Location">
-        </div>
-        <div class="form-group">
-            <label for="user_id">User ID:</label>
-            <input type="text" name="user_id" class="form-control" placeholder="Enter User ID">
-        </div>
-        <button type="submit" class="btn btn-primary">
-            {{ __('Submit') }}
-        </button>
-    </form>
-</div>
+  @extends('layouts.admin')
 
-@endsection
+  @section('content')
+
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Register new device</h4>
+        <p class="card-description">
+          Device registration form
+        </p>
+        <form class="forms-sample" action="{{ route('admin.store') }}" method="POST">
+          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+          <div class="form-group">
+            <label for="exampleInputName1">Device SerialNumber</label>
+            <input type="text" class="form-control" id="exampleInputName1" placeholder="Serial Number" name="device_serialnumber">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputMac">Mac Address</label>
+            <input type="text" class="form-control" id="exampleInputMac" placeholder="Mac Address" name="mac_address">
+          </div>
+          <button type="submit" class="btn btn-primary me-2">Submit</button>
+          <button type="button" class="btn btn-light" onclick="location.href='{{route('admin.index')}}'">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  @endsection

@@ -1,337 +1,868 @@
-@extends('layouts.main')
+
+@extends('layouts.auth')
 
 @section('content')
 
-    <div class="container-fluid">
-        <h1>Set up {{$devices->device_name}} </h1>
-
-        
-    <div class="row">
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-primary text-white mb-4">
-                <div class="card-body">Channel 1</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#channel1" data-toggle="collapse" aria-expanded="link to set schedule">Set Schedule</a>
-                    <div class="small text-white"><i class="fas fa-angle-down"></i></div>
+<div class="mdc-layout-grid">
+  <div class="mdc-layout-grid__inner">
+    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
+      <div class="mdc-card info-card info-card--success">
+        <div class="card-inner">
+          <h5 class="card-title">{{$devices->channel1}}</h5>
+          <h5 class="font-weight-light pb-2 mb-1 border-bottom"><a href="#channel1counter" data-bs-toggle="modal" class="small-box-footer"><h6>Set counter</h6></a></h5>
+          {{-- Modal for counter --}}
+          <div class="modal fade" id="channel1counter">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Set Counter for channel 1</h4>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
+                <div class="modal-body">
+                  <form action="{{ route('updateChannel1Counter', [$devices->id]) }}" method="POST" id="modal-details[5]">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group row">
+                      <label for="c1counter" class="col-sm-5 col-form-label"><h6>{{$devices->channel1}} Counter</h6></label>
+                      <div class="col-sm-5">
+                        <input type="text" class="form-control timepicker" id="input_starttime" name="c1counter" value="{{$devices->c1counter}}" placeholder="HH:MM:SS" @error('c1counter') is-invalid @enderror>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary swalDefaultSuccess" form="modal-details[5]">Start</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </form>
+                </div>  
+              </div>
+              <!-- /.modal-content -->
             </div>
-            <div class="collapse" id="channel1">
-                
-                {{-- <form action="{{ route('user.update',$device->id) }}" method="POST">
-                    {{-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> --}}
-                    {{-- @csrf
-                    @method('PUT') --}} 
-                    <livewire:toggle-switch
-                    :model="$device_states"
-                    field="channel1state"
-                    key="{{ $device_states->id }}" />
-                    {{-- </form> --}}
-                <form action="POST" method="POST">
-                    <div class="form-group row">
-                        <label for="monday_on" class="col-md-4 col-form-label text-md-right">Monday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="monday_on" name="c1Mon_On" placeholder="Monday ON">
-                        
-                            <input type="time" class="form-control" id="monday_off" name="c1Mon_Off" placeholder="Monday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="tuesday_on" class="col-md-4 col-form-label text-md-right">Tuesday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="tuesday_on" name="c1Tue_On" placeholder="Tuesday ON">
-                        
-                            <input type="time" class="form-control" id="tuesday_off" name="c1Tue_Off" placeholder="Tuesday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="wednesday_on" class="col-md-4 col-form-label text-md-right">Wednesday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="wednesday_on" name="c1Wed_On" placeholder="Wednesday ON">
-                        
-                            <input type="time" class="form-control" id="wednesday_off" name="c1Wed_Off" placeholder="Wednesday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="thursday_on" class="col-md-4 col-form-label text-md-right">Thursday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="thursday_on" name="c1Thur_On" placeholder="Thursday ON">
-                        
-                            <input type="time" class="form-control" id="thursday_off" name="c1Thur_Off" placeholder="Thursday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="friday_on" class="col-md-4 col-form-label text-md-right">Friday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="friday_on" name="c1Fri_On" placeholder="Friday ON">
-                        
-                            <input type="time" class="form-control" id="friday_off" name="c1Fri_Off" placeholder="Friday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="saturday_on" class="col-md-4 col-form-label text-md-right">Saturday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="saturday_on" name="c1Sat_Off" placeholder="Saturday ON">
-                        
-                            <input type="time" class="form-control" id="saturday_off" name="c1Sat_On" placeholder="Saturday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="sunday_on" class="col-md-4 col-form-label text-md-right">Sunday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="sunday_on" name="c1Sun_On" placeholder="Sunday ON">
-                        
-                            <input type="time" class="form-control" id="sunday_off" name="c1Sun_Off" placeholder="Sunday OFF">
-                        </div>
-                    </div>
-                    
-                        <button type="submit" class="btn btn-primary">
-                            {{ __('Submit') }}
-                        </button>
-                   
-                </form>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-warning text-white mb-4">
-                <div class="card-body">Channel 2</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#channel2" data-toggle="collapse" aria-expanded="link to set schedule">Set Schedules</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            <!-- /.modal-dialog -->
+          </div>
+          <h6 class="font-weight-light pb-2 mb-1 border-bottom">Switch: @if($devices->channel1controlsource == 1)
+            {{"Manual"}}
+              @elseif($devices->channel1controlsource == 2)
+              {{"Online"}}
+              @elseif($devices->channel1controlsource == 3)
+              {{"Online"}}
+              @elseif($devices->channel1controlsource == 0)
+              {{"Schedule"}}
+          @endif</h5>
+          <p class="tx-12 text-muted"> <span>by: </span> {{ $devices->channel1statesetby }} <br> {{ \Carbon\Carbon::parse($devices->lastchannel1state)->diffForHumans() }}</p>
+          <div class="card-icon-wrapper">
+            <div class="mdc-switch mdc-switch--light" data-mdc-auto-init="MDCSwitch">
+              <div class="mdc-switch__track"></div>
+              <div class="mdc-switch__thumb-underlay">
+                <div class="mdc-switch__thumb">
+                  <form method="POST" action="{{ route('updateChannel1State', [$devices->id]) }}">
+                    @method('PUT')
+                    @csrf
+                    <input type="checkbox" id="basic-switch" class="mdc-switch__native-control swalDefaultSuccess" role="switch" name="channel1state" onchange="this.form.submit()" {{ $devices->channel1state ? 'checked' : '' }}>
+                  </form>
                 </div>
-            </div>
-            <div class="collapse" id="channel2">
-                <form action="POST" class="POST">
-                    
-                        <label class="switch">
-                            <input type="checkbox" name="channel2state">
-                             <span class="slider"></span>
-                        </label>
-                   
-                    <div class="form-group row">
-                        <label for="monday_on" class="col-md-4 col-form-label text-md-right">Monday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="monday_on" name="c2Mon_On" placeholder="Monday ON">
-                        
-                            <input type="time" class="form-control" id="monday_off" name="c2Mon_Off" placeholder="Monday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="tuesday_on" class="col-md-4 col-form-label text-md-right">Tuesday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="tuesday_on" name="c2Tue_On" placeholder="Tuesday ON">
-                        
-                            <input type="time" class="form-control" id="tuesday_off" name="c2Tue_Off" placeholder="Tuesday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="wednesday_on" class="col-md-4 col-form-label text-md-right">Wednesday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="wednesday_on" name="c2Wed_On" placeholder="Wednesday ON">
-                        
-                            <input type="time" class="form-control" id="wednesday_off" name="c2Wed_Off" placeholder="Wednesday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="thursday_on" class="col-md-4 col-form-label text-md-right">Thursday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="thursday_on" name="c2Thur_On" placeholder="Thursday ON">
-                        
-                            <input type="time" class="form-control" id="thursday_off" name="c2Thur_Off" placeholder="Thursday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="friday_on" class="col-md-4 col-form-label text-md-right">Friday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="friday_on" name="c2Fri_On" placeholder="Friday ON">
-                        
-                            <input type="time" class="form-control" id="friday_off" name="c2Fri_Off" placeholder="Friday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="saturday_on" class="col-md-4 col-form-label text-md-right">Saturday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="saturday_on" name="c2Sat_On" placeholder="Saturday ON">
-                        
-                            <input type="time" class="form-control" id="saturday_off" name="c2Sat_Off" placeholder="Saturday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="sunday_on" class="col-md-4 col-form-label text-md-right">Sunday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="sunday_on" name="c2Sun_On" placeholder="Sunday ON">
-                        
-                            <input type="time" class="form-control" id="sunday_off" name="c2Sun_Off" placeholder="Sunday OFF">
-                        </div>
-                    </div>
-                    
-                        <button type="submit" class="btn btn-primary">
-                            {{ __('Submit') }}
-                        </button>
-                   
-                </form>
-            </div>
+              </div>
+            </div>                    
+          </div>
         </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-success text-white mb-4">
-                <div class="card-body">Channel 3</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#channel3" data-toggle="collapse" aria-expanded="link to set schedule">Set Schedule</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-            <div class="collapse" id="channel3">
-                <form action="POST" class="POST">
-                    
-                        <label class="switch">
-                            <input type="checkbox" name="channel3state" >
-                             <span class="slider"></span>
-                        </label>
-                   
-                    <div class="form-group row">
-                        <label for="monday_on" class="col-md-4 col-form-label text-md-right">Monday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="monday_on" name="c3Mon_On" placeholder="Monday ON">
-                        
-                            <input type="time" class="form-control" id="monday_off" name="c3Mon_Off" placeholder="Monday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="tuesday_on" class="col-md-4 col-form-label text-md-right">Tuesday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="tuesday_on" name="c3Tue_On" placeholder="Tuesday ON">
-                        
-                            <input type="time" class="form-control" id="tuesday_off" name="c3Tue_Off" placeholder="Tuesday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="wednesday_on" class="col-md-4 col-form-label text-md-right">Wednesday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="wednesday_on" name="c3Wed_On" placeholder="Wednesday ON">
-                        
-                            <input type="time" class="form-control" id="wednesday_off" name="c3Wed_Off" placeholder="Wednesday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="thursday_on" class="col-md-4 col-form-label text-md-right">Thursday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="thursday_on" name="c3Thur_On" placeholder="Thursday ON">
-                        
-                            <input type="time" class="form-control" id="thursday_off" name="c3Thur_Off" placeholder="Thursday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="friday_on" class="col-md-4 col-form-label text-md-right">Friday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="friday_on" name="c3Fri_On" placeholder="Friday ON">
-                        
-                            <input type="time" class="form-control" id="friday_off" name="c3Fri_Off" placeholder="Friday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="saturday_on" class="col-md-4 col-form-label text-md-right">Saturday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="saturday_on" name="c3Sat_On" placeholder="Saturday ON">
-                        
-                            <input type="time" class="form-control" id="saturday_off" name="c3Sat_Off" placeholder="Saturday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="sunday_on" class="col-md-4 col-form-label text-md-right">Sunday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="sunday_on" name="c3Sun_On" placeholder="Sunday ON">
-                        
-                            <input type="time" class="form-control" id="sunday_off" name="c3Sun_Off" placeholder="Sunday OFF">
-                        </div>
-                    </div>
-                    
-                        <button type="submit" class="btn btn-primary">
-                            {{ __('Submit') }}
-                        </button>
-                   
-                </form>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-danger text-white mb-4">
-                <div class="card-body">Channel 4</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#channel4" data-toggle="collapse" aria-expanded="link to set schedule">Set Schedule</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-            <div class="collapse" id="channel4">
-                <form action="POST" class="POST">
-                    
-                        <label class="switch">
-                            <input type="checkbox" name="channel4state" >
-                             <span class="slider"></span>
-                        </label>
-                   
-                    <div class="form-group row">
-                        <label for="monday_on" class="col-md-4 col-form-label text-md-right">Monday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="monday_on" name="c4Mon_On" placeholder="Monday ON">
-                        
-                            <input type="time" class="form-control" id="monday_off" name="c4Mon_Off" placeholder="Monday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="tuesday_on" class="col-md-4 col-form-label text-md-right">Tuesday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="tuesday_on" name="c4Tue_On" placeholder="Tuesday ON">
-                        
-                            <input type="time" class="form-control" id="tuesday_off" name="c4Tue_Off" placeholder="Tuesday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="wednesday_on" class="col-md-4 col-form-label text-md-right">Wednesday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="wednesday_on" name="c4Wed_On" placeholder="Wednesday ON">
-                        
-                            <input type="time" class="form-control" id="wednesday_off" name="c4Wed_On" placeholder="Wednesday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="thursday_on" class="col-md-4 col-form-label text-md-right">Thursday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="thursday_on" name="c4Thur_On" placeholder="Thursday ON">
-                        
-                            <input type="time" class="form-control" id="thursday_off" name="c4Thur_Off" placeholder="Thursday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="friday_on" class="col-md-4 col-form-label text-md-right">Friday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="friday_on" name="c4Fri_On" placeholder="Friday ON">
-                        
-                            <input type="time" class="form-control" id="friday_off" name="c4Fri_Off" placeholder="Friday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="saturday_on" class="col-md-4 col-form-label text-md-right">Saturday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="saturday_on" name="c4Sat_On" placeholder="Saturday ON">
-                        
-                            <input type="time" class="form-control" id="saturday_off" name="c4Sat_Off" placeholder="Saturday OFF">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="sunday_on" class="col-md-4 col-form-label text-md-right">Sunday</label>
-                        <div class="col-md-6">
-                            <input type="time" class="form-control" id="sunday_on" name="c4Sun_On" placeholder="Sunday ON">
-                        
-                            <input type="time" class="form-control" id="sunday_off" name="c4Sun_On" placeholder="Sunday OFF">
-                        </div>
-                    </div>
-                    
-                        <button type="submit" class="btn btn-primary">
-                            {{ __('Submit') }}
-                        </button>
-                   
-                </form>
-            </div>
-        </div>
+      </div>
     </div>
-
+    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
+      <div class="mdc-card info-card info-card--danger">
+        <div class="card-inner">
+          <h5 class="card-title">{{$devices->channel2}}</h5>
+          <h5 class="font-weight-light pb-2 mb-1 border-bottom"><a href="#channel2counter" data-bs-toggle="modal" class="small-box-footer"><h6>Set counter</h6></a></h5>
+          <div class="modal fade" id="channel2counter">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Set Counter for channel 2</h4>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="{{ route('updateChannel2Counter', [$devices->id]) }}" method="POST" id="modal-details[6]">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group row">
+                      <label for="c2counter" class="col-sm-5 col-form-label"><h6>{{$devices->channel2}} Counter</h6></label>
+                      <div class="col-sm-5">
+                        <input type="text" class="form-control" id="c2counter" name="c2counter" value="{{$devices->c2counter}}" placeholder="HH:MM:SS" @error('c2counter') is-invalid @enderror>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary" form="modal-details[6]">Start</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </form>
+                </div>  
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <h6 class="font-weight-light pb-2 mb-1 border-bottom">Switch:@if($devices->channel2controlsource == 1)
+            {{"Manual"}}
+              @elseif($devices->channel2controlsource == 2)
+              {{"Online"}}
+              @elseif($devices->channel2controlsource == 3)
+              {{"Online"}}
+              @elseif($devices->channel2controlsource == 0)
+              {{"Schedule"}}
+          @endif</h5>
+          <p class="tx-12 text-muted"> <span>by: </span> {{ $devices->channel2statesetby }} <br> {{ \Carbon\Carbon::parse($devices->lastchannel2state)->diffForHumans() }}</p>
+          <div class="card-icon-wrapper">
+            <div class="mdc-switch mdc-switch--light" data-mdc-auto-init="MDCSwitch">
+              <div class="mdc-switch__track"></div>
+              <div class="mdc-switch__thumb-underlay">
+                <div class="mdc-switch__thumb">
+                  <form method="POST" action="{{ route('updateChannel2State', [$devices->id]) }}">
+                    @method('PUT')
+                    @csrf
+                    <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch" name="channel2state" onchange="this.form.submit()" {{ $devices->channel2state ? 'checked' : '' }}>
+                  </form>
+                </div>
+              </div>
+            </div>                    
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
+      <div class="mdc-card info-card info-card--primary">
+        <div class="card-inner">
+          <h5 class="card-title">{{$devices->channel3}}</h5>
+          <h5 class="font-weight-light pb-2 mb-1 border-bottom"><a href="#channel3counter" data-bs-toggle="modal" class="small-box-footer"><h6>Set counter</h6></a></h5>
+          <div class="modal fade" id="channel3counter">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Set Counter for channel 3</h4>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="{{ route('updateChannel3Counter', [$devices->id]) }}" method="POST" id="modal-details[7]">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group row">
+                      <label for="c3counter" class="col-sm-5 col-form-label"><h6>{{$devices->channel3}} Counter</h6></label>
+                      <div class="col-sm-5">
+                        <input type="text" class="form-control" id="c3counter" name="c3counter" value="{{$devices->c3counter}}" placeholder="HH:MM:SS" @error('c3counter') is-invalid @enderror>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary" form="modal-details[7]">Start</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </form>
+                </div>  
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <h6 class="font-weight-light pb-2 mb-1 border-bottom">Switch:@if($devices->channel3controlsource == 1)
+            {{"Manual"}}
+              @elseif($devices->channel3controlsource == 2)
+              {{"Online"}}
+              @elseif($devices->channel3controlsource == 3)
+              {{"Online"}}
+              @elseif($devices->channel3controlsource == 0)
+              {{"Schedule"}}
+          @endif</h5>
+          <p class="tx-12 text-muted"> <span>by: </span> {{ $devices->channel3statesetby }} <br> {{ \Carbon\Carbon::parse($devices->lastchannel3state)->diffForHumans() }}</p>
+          <div class="card-icon-wrapper">
+            <div class="mdc-switch mdc-switch--light" data-mdc-auto-init="MDCSwitch">
+              <div class="mdc-switch__track"></div>
+              <div class="mdc-switch__thumb-underlay">
+                <div class="mdc-switch__thumb">
+                  <form method="POST" action="{{ route('updateChannel3State', [$devices->id]) }}">
+                    @method('PUT')
+                    @csrf
+                    <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch" name="channel3state" onchange="this.form.submit()" {{ $devices->channel3state ? 'checked' : '' }}>
+                  </form>
+                </div>
+              </div>
+            </div>                    
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
+      <div class="mdc-card info-card info-card--info">
+        <div class="card-inner">
+          <h5 class="card-title">{{$devices->channel4}}</h5>
+          <h5 class="font-weight-light pb-2 mb-1 border-bottom"><a href="#channel4counter" data-bs-toggle="modal" class="small-box-footer"><h6>Set counter</h6></a></h5>
+          <div class="modal fade" id="channel4counter">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Set Counter for channel 4</h4>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="{{ route('updateChannel4Counter', [$devices->id]) }}" method="POST" id="modal-details[8]">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group row">
+                      <label for="c4counter" class="col-sm-5 col-form-label"><h6>{{$devices->channel4}} Counter</h6></label>
+                      <div class="col-sm-5">
+                        <input type="text" class="form-control" id="c4counter" name="c4counter" value="{{$devices->c4counter}}" placeholder="HH:MM:SS" @error('c4counter') is-invalid @enderror>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary" form="modal-details[8]">Start</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </form>
+                </div>  
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <h6 class="font-weight-light pb-2 mb-1 border-bottom">Switch:@if($devices->channel4controlsource == 1)
+            {{"Manual"}}
+              @elseif($devices->channel4controlsource == 2)
+              {{"Online"}}
+              @elseif($devices->channel4controlsource == 3)
+              {{"Online"}}
+              @elseif($devices->channel4controlsource == 0)
+              {{"Schedule"}}
+          @endif</h5>
+          <p class="tx-12 text-muted"> <span>by: </span> {{ $devices->channel4statesetby }} <br>  {{ \Carbon\Carbon::parse($devices->lastchannel4state)->diffForHumans() }}</p>
+          <div class="card-icon-wrapper">
+            <div class="mdc-switch mdc-switch--light" data-mdc-auto-init="MDCSwitch">
+              <div class="mdc-switch__track"></div>
+              <div class="mdc-switch__thumb-underlay">
+                <div class="mdc-switch__thumb">
+                  <form method="POST" action="{{ route('updateChannel4State', [$devices->id]) }}">
+                    @method('PUT')
+                    @csrf
+                    <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch" name="channel4state" onchange="this.form.submit()" {{ $devices->channel4state ? 'checked' : '' }}>
+                  </form> 
+                </div>
+              </div>
+            </div>                    
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+      <div class="mdc-card">
+        <div class="d-flex justify-content-between">
+          <h4 class="card-title mb-0">Set Schedule for various Channels</h4>
+          <p>Temperature: {{$devices->temperature}}</p>
+          <div>
+            <a href="javascript:void(0)" onclick="location.reload();" class=""><i class="material-icons refresh-icon">refresh</i></a>
+          </div>
+        </div>
+        <div class="d-block d-sm-flex justify-content-between align-items-center">
+            <h5 class="card-sub-title mb-2 mb-sm-0"></h5>
+            <div class="menu-button-container">
+              <button class="mdc-button mdc-menu-button mdc-button--raised button-box-shadow tx-12 text-dark bg-white font-weight-light">
+                  Last Seen: {{ \Carbon\Carbon::parse($devices->lastseen)->diffForHumans() }}
+                <i class="material-icons">arrow_drop_down</i>
+              </button>
+              <div class="mdc-menu mdc-menu-surface" tabindex="-1">
+                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                  
+                  <li class="mdc-list-item" role="menuitem">
+                    <h6 class="item-subject font-weight-normal"><a href="javascript:void(0)" onclick="location.reload();" class="">Refresh</a></h6>
+                  </li>
+              
+                </ul>
+              </div>
+            </div>
+        </div>
+        <div class="mdc-layout-grid__inner mt-2">
+          <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-8-tablet">
+            <div class="table-responsive">
+              <table class="table select-table">
+                <tbody>
+                  <tr>
+                    <td>
+                      <button type="button" class="mdc-button mdc-button--raised icon-button filled-button--light" data-bs-toggle="modal" data-bs-target="#channel1schedule">
+                        <i class="material-icons mdc-button__icon">event_available</i>Set schedule
+                      </button>
+                      <div class="modal fade" id="channel1schedule" tabindex="-1" role="dialog" aria-bs-labelledby="channel1schedule" aria-bs-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">{{$devices->channel1}} Schedule</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form action="{{ route('updateChannel1Schedule', [$devices->id]) }}" method="POST" id="modal-details[1]">
+                              @csrf
+                              @method('PUT')
+                              <input type="hidden" class="form-control" id="newRequestC1" name="newRequestC1" value="1">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Monday On</span>
+                                    <input class="form-control" type="time" name="c1Mon_On" value="{{ $devices->c1Mon_On }}" required>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Monday Off</span>
+                                    <input class="form-control" type="time" name="c1Mon_Off" value="{{ $devices->c1Mon_Off }}" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Tuesday On</span>
+                                    <input class="form-control" type="time" name="c1Tue_On" value="{{ $devices->c1Tue_On }}" required>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Tuesday Off</span>
+                                    <input class="form-control" type="time" name="c1Tue_Off" value="{{ $devices->c1Tue_Off }}" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Wednesday On</span>
+                                    <input class="form-control" type="time" name="c1Wed_On" value="{{ $devices->c1Wed_On }}" required>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Wednesday Off</span>
+                                    <input class="form-control" type="time" name="c1Wed_Off" value="{{ $devices->c1Wed_Off }}" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Thursday On</span>
+                                    <input class="form-control" type="time" name="c1Thur_On" value="{{ $devices->c1Thur_On }}" required>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Thurday Off</span>
+                                    <input class="form-control" type="time" name="c1Thur_Off" value="{{ $devices->c1Thur_Off }}" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Friday On</span>
+                                    <input class="form-control" type="time" name="c1Fri_On" value="{{ $devices->c1Fri_On }}" required>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Friday Off</span>
+                                    <input class="form-control" type="time" name="c1Fri_Off" value="{{ $devices->c1Fri_Off }}" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Saturday On</span>
+                                    <input class="form-control" type="time" name="c1Sat_On" value="{{ $devices->c1Sat_On }}" required>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Saturday Off</span>
+                                    <input class="form-control" type="time" name="c1Sat_Off" value="{{ $devices->c1Sat_Off }}" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Sunday On</span>
+                                    <input class="form-control" type="time" name="c1Sun_On" value="{{ $devices->c1Sun_On }}" required>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <span class="form-label">Sunday Off</span>
+                                    <input class="form-control" type="time" name="c1Sun_Off" value="{{ $devices->c1Sun_Off }}" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" form="modal-details[1]">Save changes</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              </div>
+                            </form>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <h6>{{$devices->channel1}}</h6>
+                      <p>By: {{$devices->channel1schedulesetby}} </p>
+                    </td>
+                    <td>
+                      <h6>Last schedule</h6>
+                      <p>{{ \Carbon\Carbon::parse($devices->lastchannel1schedule)->diffForHumans() }}</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <button type="button" class="mdc-button mdc-button--raised icon-button filled-button--light" data-bs-toggle="modal" data-bs-target="#channel2schedule">
+                        <i class="material-icons mdc-button__icon">event_available</i>Set schedule
+                      </button>
+                      <div class="modal fade" id="channel2schedule" tabindex="-1" role="dialog" aria-bs-labelledby="channel2schedule" aria-bs-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel2">{{$devices->channel2}} Schedule</h5>
+                              <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <form action="{{ route('updateChannel2Schedule', [$devices->id]) }}" method="POST" id="modal-details[2]">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" class="form-control" id="newRequestC2" name="newRequestC2" value="1">
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Monday On</span>
+                                      <input class="form-control" type="time" name="c2Mon_On" value="{{ $devices->c2Mon_On }}" required>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Monday Off</span>
+                                      <input class="form-control" type="time" name="c2Mon_Off" value="{{ $devices->c2Mon_Off }}" required>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Tuesday On</span>
+                                      <input class="form-control" type="time" name="c2Tue_On" value="{{ $devices->c2Tue_On }}" required>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Tuesday Off</span>
+                                      <input class="form-control" type="time" name="c2Tue_Off" value="{{ $devices->c2Tue_Off }}" required>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Wednesday On</span>
+                                      <input class="form-control" type="time" name="c2Wed_On" value="{{ $devices->c2Wed_On }}" required>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Wednesday Off</span>
+                                      <input class="form-control" type="time" name="c2Wed_Off" value="{{ $devices->c2Wed_Off }}" required>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Thursday On</span>
+                                      <input class="form-control" type="time" name="c2Thur_On" value="{{ $devices->c2Thur_On }}" required>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Thurday Off</span>
+                                      <input class="form-control" type="time" name="c2Thur_Off" value="{{ $devices->c2Thur_Off }}" required>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Friday On</span>
+                                      <input class="form-control" type="time" name="c2Fri_On" value="{{ $devices->c2Fri_On }}" required>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Friday Off</span>
+                                      <input class="form-control" type="time" name="c2Fri_Off" value="{{ $devices->c2Fri_Off }}" required>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Saturday On</span>
+                                      <input class="form-control" type="time" name="c2Sat_On" value="{{ $devices->c2Sat_On }}" required>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Saturday Off</span>
+                                      <input class="form-control" type="time" name="c2Sat_Off" value="{{ $devices->c2Sat_Off }}" required>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Sunday On</span>
+                                      <input class="form-control" type="time" name="c2Sun_On" value="{{ $devices->c2Sun_On }}" required>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <span class="form-label">Sunday Off</span>
+                                      <input class="form-control" type="time" name="c2Sun_Off" value="{{ $devices->c2Sun_Off }}" required>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="submit" class="btn btn-primary" form="modal-details[2]">Save changes</button>
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                              </form>
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                    </td>
+                    <td>
+                      <h6>{{$devices->channel2}}</h6>
+                      <p>By: {{$devices->channel2schedulesetby}} </p>
+                    </td>
+                    <td>
+                      <h6>Last schedule</h6>
+                      <p>{{ \Carbon\Carbon::parse($devices->lastchannel2schedule)->diffForHumans() }}</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <button type="button" class="mdc-button mdc-button--raised icon-button filled-button--light" data-bs-toggle="modal" data-bs-target="#channel3schedule">
+                        <i class="material-icons mdc-button__icon">event_available</i>Set schedule
+                      </button>
+                      <div class="modal fade" id="channel3schedule" tabindex="-1" role="dialog" aria-bs-labelledby="channel3schedule" aria-bs-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabe3">{{$devices->channel3}} Schedule</h5>
+                              <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <form action="{{ route('updateChannel3Schedule', [$devices->id]) }}" method="POST" id="modal-details[3]">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" class="form-control" id="newRequestC3" name="newRequestC3" value="1">
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Monday On</span>
+                                        <input class="form-control" type="time" name="c3Mon_On" value="{{ $devices->c3Mon_On }}" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Monday Off</span>
+                                        <input class="form-control" type="time" name="c3Mon_Off" value="{{ $devices->c3Mon_Off }}" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Tuesday On</span>
+                                        <input class="form-control" type="time" name="c3Tue_On" value="{{ $devices->c3Tue_On }}" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Tuesday Off</span>
+                                        <input class="form-control" type="time" name="c3Tue_Off" value="{{ $devices->c3Tue_Off }}" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Wednesday On</span>
+                                        <input class="form-control" type="time" name="c3Wed_On" value="{{ $devices->c3Wed_On }}" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Wednesday Off</span>
+                                        <input class="form-control" type="time" name="c3Wed_Off" value="{{ $devices->c3Wed_Off }}" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Thursday On</span>
+                                        <input class="form-control" type="time" name="c3Thur_On" value="{{ $devices->c3Thur_On }}" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Thurday Off</span>
+                                        <input class="form-control" type="time" name="c3Thur_Off" value="{{ $devices->c3Thur_Off }}" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Friday On</span>
+                                        <input class="form-control" type="time" name="c3Fri_On" value="{{ $devices->c3Fri_On }}" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Friday Off</span>
+                                        <input class="form-control" type="time" name="c3Fri_Off" value="{{ $devices->c3Fri_Off }}" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Saturday On</span>
+                                        <input class="form-control" type="time" name="c3Sat_On" value="{{ $devices->c3Sat_On }}" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Saturday Off</span>
+                                        <input class="form-control" type="time" name="c3Sat_Off" value="{{ $devices->c3Sat_Off }}" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Sunday On</span>
+                                        <input class="form-control" type="time" name="c3Sun_On" value="{{ $devices->c3Sun_On }}" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <span class="form-label">Sunday Off</span>
+                                        <input class="form-control" type="time" name="c3Sun_Off" value="{{ $devices->c3Sun_Off }}" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" form="modal-details[3]">Save changes</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  </div>
+                              </form>
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                    </td>
+                    <td>
+                      <h6>{{$devices->channel3}}</h6>
+                      <p>By: {{$devices->channel3schedulesetby}} </p>
+                    </td>
+                    <td>
+                      <h6>Last schedule</h6>
+                      <p>{{ \Carbon\Carbon::parse($devices->lastchannel3schedule)->diffForHumans() }}</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <button type="button" class="mdc-button mdc-button--raised icon-button filled-button--light" data-bs-toggle="modal" data-bs-target="#channel4schedule">
+                        <i class="material-icons mdc-button__icon">event_available</i>Set schedule
+                      </button>
+                      <div class="modal fade" id="channel4schedule" tabindex="-1" role="dialog" aria-bs-labelledby="channel4schedule" aria-bs-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="card modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel4">{{$devices->channel4}} Schedule</h5>
+                              <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <form action="{{ route('updateChannel4Schedule', [$devices->id]) }}" method="POST" id="modal-details[4]">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" class="form-control" id="newRequestC4" name="newRequestC4" value="1">
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Monday On</span>
+                                          <input class="form-control" type="time" name="c4Mon_On" value="{{ $devices->c4Mon_On }}" required>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Monday Off</span>
+                                          <input class="form-control" type="time" name="c4Mon_Off" value="{{ $devices->c4Mon_Off }}" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Tuesday On</span>
+                                          <input class="form-control" type="time" name="c4Tue_On" value="{{ $devices->c4Tue_On }}" required>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Tuesday Off</span>
+                                          <input class="form-control" type="time" name="c4Tue_Off" value="{{ $devices->c4Tue_Off }}" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Wednesday On</span>
+                                          <input class="form-control" type="time" name="c4Wed_On" value="{{ $devices->c4Wed_On }}" required>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Wednesday Off</span>
+                                          <input class="form-control" type="time" name="c4Wed_Off" value="{{ $devices->c4Wed_Off }}" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Thursday On</span>
+                                          <input class="form-control" type="time" name="c4Thur_On" value="{{ $devices->c4Thur_On }}" required>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Thurday Off</span>
+                                          <input class="form-control" type="time" name="c4Thur_Off" value="{{ $devices->c4Thur_Off }}" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Friday On</span>
+                                          <input class="form-control" type="time" name="c4Fri_On" value="{{ $devices->c4Fri_On }}" required>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Friday Off</span>
+                                          <input class="form-control" type="time" name="c4Fri_Off" value="{{ $devices->c4Fri_Off }}" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Saturday On</span>
+                                          <input class="form-control" type="time" name="c4Sat_On" value="{{ $devices->c4Sat_On }}" required>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Saturday Off</span>
+                                          <input class="form-control" type="time" name="c4Sat_Off" value="{{ $devices->c4Sat_Off }}" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Sunday On</span>
+                                          <input class="form-control" type="time" name="c4Sun_On" value="{{ $devices->c4Sun_On }}" required>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <span class="form-label">Sunday Off</span>
+                                          <input class="form-control" type="time" name="c4Sun_Off" value="{{ $devices->c4Sun_Off }}" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="submit" class="btn btn-primary" form="modal-details[4]">Save changes</button>
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                              </form>
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                    </td>
+                    <td>
+                      <h6>{{$devices->channel4}}</h6>
+                      <p>By: {{$devices->channel4schedulesetby}} </p>
+                    </td>
+                    <td>
+                      <h6>Last schedule</h6>
+                      <p>{{ \Carbon\Carbon::parse($devices->lastchannel4schedule)->diffForHumans() }}</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-8-tablet"> 
+            <!--clock-->
+            <div class="clockbox">
+              <svg id="clock" xmlns="http://www.w3.org/2000/svg" width="600" height="300" viewBox="0 0 600 600">
+                  <g id="face">
+                      <circle class="circle" cx="300" cy="300" r="253.9"/>
+                      <path class="hour-marks" d="M300.5 94V61M506 300.5h32M300.5 506v33M94 300.5H60M411.3 107.8l7.9-13.8M493 190.2l13-7.4M492.1 411.4l16.5 9.5M411 492.3l8.9 15.3M189 492.3l-9.2 15.9M107.7 411L93 419.5M107.5 189.3l-17.1-9.9M188.1 108.2l-9-15.6"/>
+                      <circle class="mid-circle" cx="300" cy="300" r="16.2"/>
+                  </g>
+                  <g id="hour">
+                      <path class="hour-hand" d="M300.5 298V142"/>
+                      <circle class="sizing-box" cx="300" cy="300" r="253.9"/>
+                  </g>
+                  <g id="minute">
+                      <path class="minute-hand" d="M300.5 298V67"/>
+                      <circle class="sizing-box" cx="300" cy="300" r="253.9"/>
+                  </g>
+                  <g id="second">
+                      <path class="second-hand" d="M300.5 350V55"/>
+                      <circle class="sizing-box" cx="300" cy="300" r="253.9"/>
+                  </g>
+              </svg>
+            </div>
+            <!--end clock-->
+          </div>
+        </div>
+      </div> 
+    </div>
+  </div>
+</div>
 
 @endsection

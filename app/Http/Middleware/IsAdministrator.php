@@ -18,8 +18,8 @@ class IsAdministrator
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->is_admin != '0') {
-            return redirect('admin');
+        if (Auth::user()->role_id == 1) {
+            return redirect()->intended('/admin');
         }
         return $next($request);
     }
